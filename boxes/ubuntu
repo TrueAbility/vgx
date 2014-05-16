@@ -1,0 +1,4 @@
+---
+virtualbox: http://utility.trueability.com/vagrant/ubuntu-12.04-x86_64.box
+rackspace: /Ubuntu 12.04/
+digital_ocean: /Ubuntu 12.04/

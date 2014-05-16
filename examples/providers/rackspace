@@ -1,0 +1,11 @@
+x.vm.provider :rackspace do |rs, override|
+  override.ssh.private_key_path = RS_PRIVATE_KEY_PATH
+  override.vm.box = "rs-dummy"
+  override.vm.box_url = RS_BOX_URL
+  rs.username = RS_USERNAME
+  rs.api_key = RS_API_KEY
+  rs.server_name = id
+  rs.flavor = RS_FLAVOR
+  rs.image = this_os['rs_image']
+  rs.public_key_path = RS_PUBLIC_KEY_PATH
+end
