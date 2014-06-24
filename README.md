@@ -1,13 +1,14 @@
-# Vagrant X
+# VGX Dynamic Vagrant Configuration
 
 ## What is it?
 
-Vagrant X (or simply VGX) is a simple wrapper around Vagrant.  Vagrant is
-generally used on a per-project basis where every project has their own
-Vagrantfile that determines how Vagrant operates within that one
-directory/project.  What we found, is that Vagrant does not dynamically
-support multiple boxes and providers, making it difficult to use one
-Vagrantfile to test the same project in multiple different environments.
+VGX provides a dynamic Vagrant configuration that can be used for any project.
+Vagrant is generally used on a per-project basis where every project has it's
+own Vagrantfile that determines how Vagrant operates within that one
+directory/project.  Additionally, Vagrant does not dynamically
+support multiple boxes and providers "out-of-the-box", making it difficult to
+use one Vagrantfile to test the same project in multiple different
+environments.
 
 Our use case involves the need to run tests across multiple different OS
 distributions and versions, as well as on different providers (VirtualBox,
@@ -118,7 +119,21 @@ digital_ocean: /Ubuntu 12.04/
 ```
 
 The box configuration simply defines a necessary identifier that tells the
-provider where or how to find the box image/url.
+provider where or how to find the box image/url.  The key thing to note is
+that the same configuration will work for any supported provider.  For example
+you can do the following with the same box:
+
+```
+[vgx] $ vagrant up ubuntu
+
+[vgx] $ vagrant up ubuntu --provider rackspace
+
+[vgx] $ vagrant up ubuntu --provider digital_ocean
+```
+
+The idea being, that you can test not only on multiple distributions, but also
+across multiple providers to ensure maximum compatibility (depending on your
+use case).
 
 
 ### Configuring Providers
