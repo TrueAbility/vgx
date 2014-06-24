@@ -1,7 +1,5 @@
 # VGX Dynamic Vagrant Configuration
 
-## What is it?
-
 VGX provides a dynamic Vagrant configuration that can be used for any project.
 Vagrant is generally used on a per-project basis where every project has it's
 own Vagrantfile that determines how Vagrant operates within that one
@@ -27,8 +25,14 @@ $ cd vgx
 [vgx] $ export VAGRANT_VAGRANTFILE `pwd`/Vagrantfile
 
 [vgx] $ cp examples/boxes/* boxes
+```
 
-[vgx] $ vagrant status
+Now use Vagrant anywhere:
+
+```
+$ cd /path/to/myproject
+
+[myproject] $ vagrant status
 centos                    not created (virtualbox)
 centos-6                  not created (virtualbox)
 suse                      not created (virtualbox)
@@ -37,11 +41,11 @@ ubuntu                    not created (virtualbox)
 ubuntu-12.04              not created (virtualbox)
 ubuntu-14.04              not created (virtualbox)
 
-[vgx] $ vagrant up ubuntu
+[myproject] $ vagrant up ubuntu
 
-[vgx] $ vagrant ssh ubuntu
+[myproject] $ vagrant ssh ubuntu
 
-[vgx] $ vagrant destroy ubuntu
+[myproject] $ vagrant destroy ubuntu
 ```
 
 
@@ -93,7 +97,7 @@ $ cd /path/to/myproject
 
 [myproject] $ cp /path/to/vgx/examples/boxes/* vagrant/boxes/
 
-[myproject] $ $ vagrant status
+[myproject] $ vagrant status
 Current machine states:
 
 centos                    not created (virtualbox)
