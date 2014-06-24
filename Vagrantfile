@@ -5,11 +5,26 @@ require 'yaml'
 
 VAGRANTFILE_API_VERSION = "2"
 VGX_ROOT = File.dirname(__FILE__)
+VGX_BOOTSTRAP = ENV['VGX_BOOTSTRAP'] || 'vagrant/bootstrap'
+
+# location of box configurations
+if Dir.exists?('vagrant/boxes')
+  VGX_BOXES = 'vagrant/boxes'
+else
+  VGX_BOXES = ENV['VGX_BOXES'] || VGX_ROOT + '/boxes'
+end
+
+# location of provider configurations
+if Dir.exists?('vagrant/providers')
+  VGX_PROVIDERS = 'vagrant/providers'
+else
+  VGX_PROVIDERS = ENV['VGX_PROVIDERS'] || VGX_ROOT + '/providers'
+end
 
 boxes = Hash.new()
-Dir.foreach("#{VGX_ROOT}/boxes") do |box_name|
+Dir.foreach("#{VGX_BOXES}") do |box_name|
   next if box_name.match(/^\./)
-  config = YAML.load_file("#{VGX_ROOT}/boxes/#{box_name}")
+  config = YAML.load_file("#{VGX_BOXES}/#{box_name}")
   boxes[box_name] = {
     "virtualbox" => config["virtualbox"],
     "rackspace" => config["rackspace"],
@@ -22,16 +37,11 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.ssh.username = "root"
 
   boxes.each do |box_name, box_config|
-    vgx_id = "#{ENV['PREFIX']}#{box_name}"
+    vgx_id = "#{ENV['VGX_BOX_PREFIX']}#{box_name}"
     config.vm.define vgx_id do |x|
+      # default virtualbox configuration
       x.vm.box_url = box_config['virtualbox']
       x.vm.box = box_name
-
-      if ENV['RUN']
-        x.vm.provision "shell" do |s|
-          s.inline = "cd /vagrant && RUN=\"#{ENV['RUN']}\""
-        end
-      end
 
       x.vm.provider "virtualbox" do |vb, override|
         vb.name = box_name
@@ -39,9 +49,16 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
         override.vm.network "private_network", type: :dhcp
       end
 
-      Dir.foreach("#{VGX_ROOT}/providers") do |item|
+      if File.exists?('vagrant/scripts/bootstrap')
+        x.vm.provision "shell" do |s|
+          s.inline = "cd /vagrant && vagrant/scripts/bootstrap"
+        end
+      end
+
+      # dynamic provider configurations
+      Dir.foreach("#{VGX_PROVIDERS}") do |item|
         next if item.match(/^\./)
-        eval File.read("#{VGX_ROOT}/providers/#{item}")
+        eval File.read("#{VGX_PROVIDERS}/#{item}")
       end
     end
   end

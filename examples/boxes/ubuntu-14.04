@@ -1,0 +1,4 @@
+---
+virtualbox: http://files.trueability.com/ta-ubuntu-14.04-x86_64.box
+rackspace: /Ubuntu 14.04/
+digital_ocean: /Ubuntu 14.04/

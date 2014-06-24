@@ -1,3 +1,8 @@
+# Digital Ocean Provider
+#
+# Copy this to `providers/digital_ocean` in your VGX directory.  Replace all
+# of the VARIABLES with appropriate settings
+#
 x.vm.provider :digital_ocean do |_do, override|
   override.ssh.private_key_path = DO_PRIVATE_KEY_PATH
   override.vm.box = "do-dummy"

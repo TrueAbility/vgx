@@ -1,0 +1,4 @@
+---
+virtualbox: http://files.trueability.com/ta-centos64-x86_64.box
+rackspace: /CentOS 6/
+digital_ocean: /CentOS 6/

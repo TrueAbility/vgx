@@ -1,3 +1,8 @@
+# Rackspace Provider
+#
+# Copy this to `providers/rackspace` in your VGX directory.  Replace all
+# of the VARIABLES with appropriate settings
+#
 x.vm.provider :rackspace do |rs, override|
   override.ssh.private_key_path = RS_PRIVATE_KEY_PATH
   override.vm.box = "rs-dummy"
@@ -6,6 +11,6 @@ x.vm.provider :rackspace do |rs, override|
   rs.api_key = RS_API_KEY
   rs.server_name = id
   rs.flavor = RS_FLAVOR
-  rs.image = this_os['rs_image']
+  rs.image = box_config['rackspace']
   rs.public_key_path = RS_PUBLIC_KEY_PATH
 end
