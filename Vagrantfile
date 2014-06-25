@@ -6,6 +6,7 @@ require 'yaml'
 VAGRANTFILE_API_VERSION = "2"
 VGX_ROOT = File.dirname(__FILE__)
 VGX_BOOTSTRAP = ENV['VGX_BOOTSTRAP'] || 'vagrant/bootstrap'
+VGX_PREFIX = ENV['VGX_PREFIX'] || ''
 
 # location of box configurations
 if Dir.exists?('vagrant/boxes')
@@ -22,9 +23,10 @@ else
 end
 
 boxes = Hash.new()
-Dir.foreach("#{VGX_BOXES}") do |box_name|
-  next if box_name.match(/^\./)
-  config = YAML.load_file("#{VGX_BOXES}/#{box_name}")
+Dir.foreach("#{VGX_BOXES}") do |name|
+  next if name.match(/^\./)
+  box_name = "#{VGX_PREFIX}#{name}"
+  config = YAML.load_file("#{VGX_BOXES}/#{name}")
   boxes[box_name] = {
     "virtualbox" => config["virtualbox"],
     "rackspace" => config["rackspace"],
