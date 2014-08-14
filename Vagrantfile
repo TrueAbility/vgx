@@ -51,9 +51,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
         override.vm.network "private_network", type: :dhcp, auto_config: false
       end
 
-      if File.exists?('vagrant/scripts/bootstrap')
+      if File.exists?(VGX_BOOTSTRAP)
         x.vm.provision "shell" do |s|
-          s.inline = "cd /vagrant && vagrant/scripts/bootstrap"
+          s.inline = "cd /vagrant && #{VGX_BOOTSTRAP}"
         end
       end
 
