@@ -46,7 +46,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       x.vm.box = box_name
 
       x.vm.provider "virtualbox" do |vb, override|
-        vb.name = box_name
         vb.gui = false
         override.vm.network "private_network", type: :dhcp, auto_config: false
       end
