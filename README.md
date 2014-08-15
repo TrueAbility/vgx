@@ -204,3 +204,100 @@ Modify the `providers/digital_ocean` file to meet your needs, and then `up` a bo
 ```
 [vgx] $ vagrant up ubuntu --provider digital_ocean
 ```
+
+### Creating a Custom Vagrant Base Image with VGX
+
+The following is the recommended method for create a custom image, when using
+VGX.  For the example, we are going to use the `ubuntu` base image, and create
+a custom image called `custom-ubuntu`.
+
+Boot a base image, without any bootstrapping scripts:
+
+```
+[vgx] $ VGX_BOOTSTRAP=/bin/true vagrant up ubuntu
+```
+
+
+Modify the OS as necessary:
+
+```
+[vgx] $ vagrant ssh ubuntu
+
+[vagrant] $ apt-get update && apt-get upgrade -y
+
+[vagrant] $ exit
+```
+
+
+Halt the VM:
+
+```
+[vgx] $ vagrant halt ubuntu
+```
+
+Get the VM ID from VirtualBox:
+
+```
+[vgx] $ VBoxManage list vms
+
+"ubuntu" {7b924cc9-fd54-4586-bc43-d19c68699719}
+```
+
+Create a Vagrant Base Image:
+
+```
+[vgx] $ vagrant package \
+        --base 7b924cc9-fd54-4586-bc43-d19c68699719 \
+        --output custom-ubuntu-12.04-x86_64.box
+```
+
+Add the Custom Vagrant Base Image:
+
+```
+[vgx] $ vagrant box add custom-ubuntu custom-ubuntu-12.04-x86_64.box \
+        --provider virtual box
+```
+
+Test the image:
+
+```
+[vgx] $ vagrant up custom-ubuntu
+```
+
+
+From here you would upload `custom-ubuntu-12.04-x86_64.box` somewhere on the
+internets, and then create a VGX Box Config file for it:
+
+```
+$ cat vagrant/boxes/ubuntu
+---
+virtualbox: http://vagrant.example.com/custom-ubuntu-12.04-x86_64.box
+```
+
+In the future, you can omit the `vagrant box add` step, as Vagrant will do
+that automatically using the VGX Box Config above when you attempt to `up` a
+box.
+
+
+### Adding a Second Disk to a Virtual Machine
+
+The easiest was to add a second disk in a Vagrant VM is to override the
+VirtualBox provider and add a little bit of hackery like the following:
+
+```
+file_to_disk = './tmp/disk2.vdi'
+
+x.vm.provider "virtualbox" do |vb, override|
+  vb.gui = false
+  override.vm.network "private_network", type: :dhcp, auto_config: false
+  vb.memory = 512
+  vb.cpus = 2
+  vb.customize ['createhd', '--filename', file_to_disk, '--size', 5 * 1024]
+  vb.customize ['storageattach', :id, '--storagectl', 'SATA', '--port', 1, '--device', 0, '--type', 'hdd', '--medium', file_to_disk]
+end
+```
+
+The above adds a 5G disk... note that all the particulars such as the
+device/port/etc is all dependent on the image you're using and so you'll need
+to play around with that to get it to work.  This would of course go into
+your 'virtualbox' provider file where ever `VGX_PROVIDERS` are located.

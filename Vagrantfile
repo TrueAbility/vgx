@@ -5,7 +5,7 @@ require 'yaml'
 
 VAGRANTFILE_API_VERSION = "2"
 VGX_ROOT = File.dirname(__FILE__)
-VGX_BOOTSTRAP = ENV['VGX_BOOTSTRAP'] || 'vagrant/bootstrap'
+VGX_BOOTSTRAP = ENV['VGX_BOOTSTRAP'] || 'vagrant/scripts/bootstrap'
 VGX_PREFIX = ENV['VGX_PREFIX'] || ''
 
 # location of box configurations
