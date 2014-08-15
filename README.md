@@ -285,9 +285,8 @@ The easiest was to add a second disk in a Vagrant VM is to override the
 VirtualBox provider and add a little bit of hackery like the following:
 
 ```
-file_to_disk = './tmp/disk2.vdi'
-
 x.vm.provider "virtualbox" do |vb, override|
+  file_to_disk = "./tmp/#{vb.name}-disk2.vdi"
   vb.gui = false
   override.vm.network "private_network", type: :dhcp, auto_config: false
   vb.memory = 512
