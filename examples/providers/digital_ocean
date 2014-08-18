@@ -9,7 +9,7 @@ x.vm.provider :digital_ocean do |_do, override|
   override.vm.box = DO_BOX_URL
   _do.client_id = DO_CLIENT_ID
   _do.api_key = DO_API_KEY
-  _do.image = this_os['do_image']
+  _do.image = box_config['cloud']
   _do.size = DO_SIZE
   _do.region = DO_REGION
   _do.setup = false

@@ -1,4 +1,3 @@
 ---
 virtualbox: http://files.trueability.com/ta-opensuse-13.1-x86_64.box
-rackspace: /OpenSuSE 13.1/
-digital_ocean: /OpenSuSE 13.1/
+cloud: OpenSUSE 13.1

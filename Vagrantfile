@@ -29,8 +29,7 @@ Dir.foreach("#{VGX_BOXES}") do |name|
   config = YAML.load_file("#{VGX_BOXES}/#{name}")
   boxes[box_name] = {
     "virtualbox" => config["virtualbox"],
-    "rackspace" => config["rackspace"],
-    "digital_ocean" => config["digital_ocean"]
+    "cloud" => Regexp.new(config["cloud"])
   }
 end
 

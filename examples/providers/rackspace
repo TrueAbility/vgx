@@ -11,6 +11,6 @@ x.vm.provider :rackspace do |rs, override|
   rs.api_key = RS_API_KEY
   rs.server_name = id
   rs.flavor = RS_FLAVOR
-  rs.image = box_config['rackspace']
+  rs.image = box_config['cloud']
   rs.public_key_path = RS_PUBLIC_KEY_PATH
 end
