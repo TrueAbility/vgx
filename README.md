@@ -118,8 +118,7 @@ directory.  These configurations are simple, and something look like:
 ```
 ---
 virtualbox: http://files.trueability.com/ta-ubuntu-12.04-x86_64.box
-rackspace: /Ubuntu 12.04/
-digital_ocean: /Ubuntu 12.04/
+cloud: Ubuntu 12.04
 ```
 
 The box configuration simply defines a necessary identifier that tells the
@@ -135,9 +134,10 @@ you can do the following with the same box:
 [vgx] $ vagrant up ubuntu --provider digital_ocean
 ```
 
-The idea being, that you can test not only on multiple distributions, but also
-across multiple providers to ensure maximum compatibility (depending on your
-use case).
+Note that the 'cloud' setting is converted to a regular expression match
+so it should work for all cloud provider plugins.  The idea being, that you
+can test not only on multiple distributions, but also across multiple
+providers to ensure maximum compatibility (depending on your use case).
 
 
 ### Configuring Providers
@@ -158,15 +158,16 @@ x.vm.provider :rackspace do |rs, override|
   rs.api_key = RS_API_KEY
   rs.server_name = id
   rs.flavor = RS_FLAVOR
-  rs.image = box_config['rackspace']
+  rs.image = box_config['cloud']
   rs.public_key_path = RS_PUBLIC_KEY_PATH
 end
 ```
 
 If you intend to use the `vagrant-rackspace` plugin (provider), then you would
-need to copy the above to `providers/rackspace` and modify all of the VARIABLES to
-set Vagrant up for our environment.  Note the use of `box_config['rackspace']`.  This
-is a key/value dictionary that is setup in the Vagrantfile.
+need to copy the above to `providers/rackspace` and modify all of the
+VARIABLES to set Vagrant up for our environment.  Note the use of
+`box_config['cloud']`.  This is a key/value dictionary that is setup in the
+Vagrantfile.
 
 Current supported/tested providers include:
 
@@ -174,8 +175,6 @@ Current supported/tested providers include:
  * Rackspace
  * Digital Ocean
 
-Currently, in order to support more providers they will need to be manually added to
-the Vagrantfile in order to add the image/url to the `box_config` dictionary.
 
 #### Using the Rackspace Provider
 
@@ -199,7 +198,8 @@ You will need to install the `vagrant-digitalocean` plugin/provider.  Then:
 [vgx] $ cp -a examples/providers/digital_ocean providers/digital_ocean
 ```
 
-Modify the `providers/digital_ocean` file to meet your needs, and then `up` a box:
+Modify the `providers/digital_ocean` file to meet your needs, and then `up` a
+box:
 
 ```
 [vgx] $ vagrant up ubuntu --provider digital_ocean
